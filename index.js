@@ -51,7 +51,7 @@ console.log(
 );
 
 rl.question(
-  `Please re-generate the token or generate a new one in Azure DevOps by navigating to https://myorg.visualstudio.com/_usersSettings/tokens and doing the following
+  `Please re-generate the token or generate a new one in Azure DevOps by navigating to https://{myorganization}.visualstudio.com/_usersSettings/tokens and doing the following
   - Provide a name for the token, e.g. "Azure DevOps package feed"
   - Use datepicker to set Expiration (UTC) to a future date, e.g. one year from now
   - Select "Custom defined" for Scopes

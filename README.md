@@ -11,18 +11,18 @@ This utility is an authentication bootstrapper for npm feeds in Azure DevOps (Az
 
 Note that you should have NodeJS and Git installed on your machine, and you should have already set a global git username and password prior to running this script (See https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup#_your_identity).
 
-You must also have an Azure DevOps account, and have the ability to create a personal access token for yourself at https://myorg.visualstudio.com/_usersSettings/tokens.
+You must also have an Azure DevOps account, and have the ability to create a personal access token for yourself at <https://{myorganization}.visualstudio.com/_usersSettings/tokens>.
 
 Finally, you MUST create a `.npmrc` file at the root of your npm project with the following contents,
 
 ```
-@myorg:registry=https://myorg.pkgs.visualstudio.com/_packaging/Fabrikam_Feed/npm/registry/
+{@myscope:}registry=https://{myorganization}.pkgs.visualstudio.com/_packaging/{feedname}/npm/registry/
 always-auth=true
 engine-strict=true
 
 ```
 
-Please note that `@myorg:` is optional if your feed only contains scoped packages. Furthermore, replace `@myorg` with the **name of your scope**. You should also replace the `myorg` before `.pkgs.visualstudio.com` with your **Azure DevOps organization name** and `Fabrikam_Feed` with the name of your **Azure DevOps (Azure Artifacts) package feed**.
+Please note that all terms in `{}` are optional. If your feed only contains scoped packages, replace `{@myscope:}` with the **name of your scope**. Otherwise, the line should simply start with `registry=`. You should also replace the `{myorganization}` before `.pkgs.visualstudio.com` with your **Azure DevOps organization name** and `{feedname}` with the name of your **Azure DevOps (Azure Artifacts) package feed**.
 
 ## Installation
 
@@ -32,7 +32,7 @@ _azure-devops-feed-auth_ is best used as a preinstall script within your `packag
 
   "scripts": {
     ...
-    "preinstall": "azure-devops-feed-auth --testPackage @myorg/mypackage",
+    "preinstall": "azure-devops-feed-auth --testPackage @myscope/mypackage",
     ...
   },
 
@@ -63,7 +63,7 @@ To use this package, simply add the preinstall hook to `package.json` as describ
 
 If authentication against the Azure DevOps package feed succeeds with the test package you provide to this script, the preinstall step will quietly exit and allow the installation of all packages from your Azure DevOps feed. If authentication fails, the script will provide instructions on how to retrieve a new personal access token (PAT) from the Azure DevOps website. These are the same instructions:
 
-1. Re-generate your personal access token (PAT) or generate a new one in Azure DevOps by navigating to https://myorg.visualstudio.com/_usersSettings/tokens and doing the following:
+1. Re-generate your personal access token (PAT) or generate a new one in Azure DevOps by navigating to <https://{myorganization}.visualstudio.com/_usersSettings/tokens> and doing the following:
 2. Click "+ New Token"
    ![Create](https://docs.microsoft.com/en-us/azure/devops/repos/git/_shared/_img/add-personal-access-token.png)
 3. Provide a name for the token, e.g. "Azure DevOps package feed"
@@ -79,4 +79,4 @@ If authentication against the Azure DevOps package feed succeeds with the test p
 
 After pasting the new PAT from the Azure DevOps page into the command prompt and hitting enter, this script will make the necessary changes to the `.npmrc` file in your user profile to allow successful authentication. Your `npm install` should then proceed without issues.
 
-Please note that upon expiration of the PAT from Azure DevOps, you may have to provide a new token the next time you run `npm install` and the preinstall step fails. You can do this by simply clicking on "+Regenerate" next to your existing token in the https://myorg.visualstudio.com/_usersSettings/tokens page.
+Please note that upon expiration of the PAT from Azure DevOps, you may have to provide a new token the next time you run `npm install` and the preinstall step fails. You can do this by simply clicking on "+Regenerate" next to your existing token in the <https://{myorganization}.visualstudio.com/_usersSettings/tokens> page.
